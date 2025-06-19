@@ -1,282 +1,375 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 
 function App() {
-  const [darkMode, setDarkMode] = useState(true) // Default to dark for space theme
-  const [stars, setStars] = useState([])
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [activeTab, setActiveTab] = useState('dashboard')
+  const [accounts, setAccounts] = useState([
+    { id: 1, name: 'Checking Account', balance: 12450.75, number: '**** 1234' },
+    { id: 2, name: 'Savings Account', balance: 25300.50, number: '**** 5678' },
+    { id: 3, name: 'Credit Card', balance: -2150.25, number: '**** 9012' }
+  ])
 
-  // Generate random stars for background
+  // Generate floating elements for background animation
   useEffect(() => {
-    const generateStars = () => {
-      const starArray = []
-      for (let i = 0; i < 150; i++) {
-        starArray.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 3 + 1,
-          twinkle: Math.random() * 2 + 1
-        })
+    const floatingElements = document.querySelector('.floating-elements')
+    if (floatingElements) {
+      // Clear existing elements
+      floatingElements.innerHTML = ''
+      // Create floating circles
+      for (let i = 0; i < 8; i++) {
+        const circle = document.createElement('div')
+        circle.className = 'absolute rounded-full opacity-10 bg-white/10 animate-float-banking'
+        circle.style.left = `${Math.random() * 100}%`
+        circle.style.top = `${Math.random() * 100}%`
+        circle.style.width = `${Math.random() * 100 + 50}px`
+        circle.style.height = circle.style.width
+        circle.style.animationDelay = `${Math.random() * 8}s`
+        floatingElements.appendChild(circle)
       }
-      setStars(starArray)
     }
-    generateStars()
   }, [])
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
+    setIsDarkMode(!isDarkMode)
     document.documentElement.classList.toggle('dark')
   }
 
-  const planets = [
-    { name: 'Earth', color: 'from-blue-400 to-green-400', distance: '0 AU', moons: 1 },
-    { name: 'Mars', color: 'from-red-400 to-orange-500', distance: '1.5 AU', moons: 2 },
-    { name: 'Jupiter', color: 'from-yellow-600 to-orange-600', distance: '5.2 AU', moons: 79 },
-    { name: 'Saturn', color: 'from-yellow-400 to-amber-500', distance: '9.5 AU', moons: 83 }
+  const bankingServices = [
+    { icon: '💳', title: 'Digital Banking', description: 'Manage your accounts online 24/7' },
+    { icon: '🏦', title: 'Loans & Mortgages', description: 'Competitive rates for all your needs' },
+    { icon: '💰', title: 'Investment Services', description: 'Grow your wealth with expert guidance' },
+    { icon: '📱', title: 'Mobile Banking', description: 'Bank on the go with our mobile app' }
   ]
 
-  const spaceFeatures = [
-    { icon: '🚀', title: 'Space Exploration', desc: 'Journey to the stars and beyond' },
-    { icon: '🌌', title: 'Galaxy Discovery', desc: 'Explore distant galaxies and nebulae' },
-    { icon: '🛸', title: 'Alien Encounters', desc: 'Search for extraterrestrial life' },
-    { icon: '🌠', title: 'Meteor Showers', desc: 'Witness cosmic light shows' }
+  const transactionHistory = [
+    { id: 1, date: '2025-06-19', description: 'Salary Deposit', amount: 5500.00, type: 'credit' },
+    { id: 2, date: '2025-06-18', description: 'Grocery Store', amount: -156.78, type: 'debit' },
+    { id: 3, date: '2025-06-17', description: 'Online Transfer', amount: -500.00, type: 'debit' },
+    { id: 4, date: '2025-06-16', description: 'Interest Payment', amount: 45.30, type: 'credit' }
   ]
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 space-bg ${darkMode ? 'dark' : ''}`}>
-      {/* Animated Stars Background */}
-      <div className="stars-container">
-        {stars.map(star => (
-          <div
-            key={star.id}
-            className="star"
-            style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              animationDelay: `${star.twinkle}s`
-            }}
-          />
-        ))}
-      </div>
+    <div className={`relative min-h-screen overflow-hidden ${
+      isDarkMode 
+        ? 'bg-banking-dark' 
+        : 'bg-banking-gradient'
+    }`}>
+      {/* Floating Background Elements */}
+      <div className="floating-elements absolute inset-0 overflow-hidden pointer-events-none"></div>
 
       <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
-        {/* Cosmic Header */}
-        <header className="mb-12 text-center">
-          <div className="flex items-center justify-between mb-8">
-            <div className="cosmic-logo">
-              <h1 className="text-6xl font-bold cosmic-gradient animate-pulse">
-                🌌 COSMIC EXPLORER
-              </h1>
-              <p className="text-xl text-purple-300 mt-2 font-light">
-                Journey Through the Universe
-              </p>
-            </div>
-            <button
-              onClick={toggleDarkMode}
-              className="space-btn-toggle"
-            >
-              {darkMode ? '☀️ Solar Mode' : '🌙 Cosmic Mode'}
-            </button>
+        {/* Banking Header */}
+        <header className="mb-16 text-center">
+          <div className="mb-8">
+            <h1 className="text-6xl font-bold mb-4 text-white text-shadow-banking-strong">
+              💜 PurpleBank
+            </h1>
+            <p className="text-xl font-light opacity-90 text-white/95 text-shadow-banking-soft">
+              Your Trusted Financial Partner
+            </p>
           </div>
-          
-          {/* Floating Astronaut */}
-          <div className="astronaut-float mb-8">
-            <div className="text-8xl animate-bounce-gentle">👨‍🚀</div>
-          </div>
-          
-          <p className="text-lg text-blue-200 max-w-2xl mx-auto leading-relaxed">
-            Embark on an epic journey through space and time. Discover distant worlds, 
-            explore cosmic phenomena, and unlock the mysteries of the universe.
-          </p>
+
+          {/* Navigation */}
+          <nav className="flex justify-center gap-8 mb-12 flex-wrap">
+            {['dashboard', 'accounts', 'services', 'support'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform backdrop-blur-sm border text-shadow-banking-soft ${
+                  activeTab === tab
+                    ? 'bg-white/95 text-banking-800 shadow-banking scale-105 border-white/30'
+                    : 'bg-white/20 text-white border-white/30 hover:bg-white/30 hover:scale-105 hover:-translate-y-1 shadow-soft'
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </nav>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="mb-8 px-4 py-2 rounded-xl bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 transition-all duration-300"
+          >
+            {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+          </button>
         </header>
 
-        {/* Solar System */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center cosmic-gradient">
-            🪐 Solar System Dashboard
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {planets.map((planet, index) => (
-              <div key={planet.name} className="planet-card group">
-                <div className={`planet-sphere bg-gradient-to-br ${planet.color}`}>
-                  <div className="planet-glow"></div>
-                </div>
-                <div className="planet-info">
-                  <h3 className="text-xl font-bold text-white mb-2">{planet.name}</h3>
-                  <p className="text-blue-200 text-sm mb-1">Distance: {planet.distance}</p>
-                  <p className="text-purple-300 text-sm">Moons: {planet.moons}</p>
-                </div>
-                <div className="planet-orbit"></div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Space Mission Control */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center cosmic-gradient">
-            🚀 Mission Control
-          </h2>
-          <div className="space-control-panel">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="control-section">
-                <h3 className="text-2xl font-semibold mb-6 text-cyan-300">
-                  Navigation Systems
-                </h3>
-                <div className="space-y-4">
-                  <button className="space-btn-primary w-full">
-                    🌍 Launch to Earth Orbit
-                  </button>
-                  <button className="space-btn-secondary w-full">
-                    🌙 Lunar Mission
-                  </button>
-                  <button className="space-btn-accent w-full">
-                    🚀 Mars Expedition
-                  </button>
-                  <button className="space-btn-danger w-full">
-                    ⚠️ Emergency Return
-                  </button>
-                </div>
-              </div>
-              
-              <div className="control-section">
-                <h3 className="text-2xl font-semibold mb-6 text-cyan-300">
-                  Communication Hub
-                </h3>
-                <div className="space-form">
-                  <div className="mb-4">
-                    <label className="space-label">Mission Commander</label>
-                    <input
-                      type="text"
-                      placeholder="Enter commander name"
-                      className="space-input"
-                    />
+        {/* Dashboard Tab */}
+        {activeTab === 'dashboard' && (
+          <div className="space-y-12">
+            {/* Account Overview */}
+            <section>
+              <h2 className="text-3xl font-bold mb-8 text-center text-white text-shadow-banking-white">
+                Account Overview
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {accounts.map((account) => (
+                  <div key={account.id} className="relative p-8 rounded-3xl overflow-hidden transform transition-all duration-500 bg-banking-card text-white shadow-banking-card hover:shadow-banking-btn-hover hover:scale-105 hover:-translate-y-2">
+                    <div className="absolute top-0 right-0 w-32 h-32 opacity-10 bg-gradient-to-br from-white/40 to-transparent rounded-full"></div>
+                    <div className="text-3xl font-bold mb-2 text-shadow-banking-soft">
+                      ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2 text-shadow-banking-soft">{account.name}</h3>
+                    <p className="text-sm opacity-80 font-mono text-shadow-banking-soft">{account.number}</p>
                   </div>
-                  <div className="mb-4">
-                    <label className="space-label">Destination Coordinates</label>
-                    <input
-                      type="text"
-                      placeholder="e.g., Alpha Centauri B"
-                      className="space-input"
-                    />
+                ))}
+              </div>
+            </section>
+
+            {/* Banking Statistics */}
+            <section>
+              <h2 className="text-3xl font-bold mb-8 text-center text-white text-shadow-banking-white">
+                Your Banking Stats
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { number: '3', label: 'Active Accounts', sublabel: 'All in good standing' },
+                  { number: '$35,601', label: 'Total Balance', sublabel: 'Across all accounts' },
+                  { number: '24', label: 'Transactions', sublabel: 'This month' },
+                  { number: '5★', label: 'Credit Score', sublabel: 'Excellent rating' }
+                ].map((stat, index) => (
+                  <div key={index} className="p-8 rounded-3xl text-center backdrop-blur-sm transform transition-all duration-500 bg-white/98 shadow-banking hover:shadow-banking-hover hover:scale-105 hover:-translate-y-2 border border-banking-800/15">
+                    <div className="text-4xl font-bold mb-3 text-banking-800 text-shadow-soft">
+                      {stat.number}
+                    </div>
+                    <div className="text-lg font-semibold text-gray-800 mb-2">
+                      {stat.label}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {stat.sublabel}
+                    </div>
                   </div>
-                  <div className="mb-6">
-                    <label className="space-label">Mission Briefing</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Describe your space mission..."
-                      className="space-input resize-none"
-                    />
+                ))}
+              </div>
+            </section>
+
+            {/* Quick Actions */}
+            <section>
+              <h2 className="text-3xl font-bold mb-8 text-center text-white text-shadow-banking-white">
+                Quick Actions
+              </h2>
+              <div className="p-10 rounded-3xl backdrop-blur-sm bg-white/98 shadow-banking border border-banking-800/15">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="p-8 rounded-2xl bg-gradient-to-br from-banking-500/8 to-banking-700/8 border border-banking-500/15 shadow-inner-soft">
+                    <h3 className="text-2xl font-semibold mb-6 text-banking-700">
+                      Transfer Money
+                    </h3>
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-banking-800 mb-3">
+                          From Account
+                        </label>
+                        <select className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white">
+                          <option>Checking Account (**** 1234)</option>
+                          <option>Savings Account (**** 5678)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-banking-800 mb-3">
+                          To Account
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Account number or email"
+                          className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white placeholder-gray-400"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-banking-800 mb-3">
+                          Amount
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="0.00"
+                          className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white placeholder-gray-400"
+                        />
+                      </div>
+                      <button className="w-full px-8 py-4 rounded-2xl font-semibold text-white transition-all duration-300 transform bg-banking-btn shadow-banking-btn border border-banking-500/30 relative overflow-hidden hover:bg-banking-btn-hover hover:shadow-banking-btn-hover hover:scale-105 hover:-translate-y-1 active:scale-95">
+                        <span className="relative z-10">Transfer Now</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-500"></div>
+                      </button>
+                    </div>
                   </div>
-                  <button className="space-btn-primary w-full">
-                    📡 Transmit to Ground Control
-                  </button>
+
+                  <div className="p-8 rounded-2xl bg-gradient-to-br from-banking-500/8 to-banking-700/8 border border-banking-500/15 shadow-inner-soft">
+                    <h3 className="text-2xl font-semibold mb-6 text-banking-700">
+                      Recent Transactions
+                    </h3>
+                    <div className="space-y-4">
+                      {transactionHistory.map((transaction) => (
+                        <div key={transaction.id} className="flex justify-between items-center p-4 rounded-xl bg-white/50 hover:bg-white/70 transition-all duration-300">
+                          <div>
+                            <p className="font-semibold text-gray-800">{transaction.description}</p>
+                            <p className="text-sm text-gray-600">{transaction.date}</p>
+                          </div>
+                          <span className={`font-bold ${transaction.type === 'credit' ? 'text-success-600' : 'text-error-600'}`}>
+                            {transaction.type === 'credit' ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* Accounts Tab */}
+        {activeTab === 'accounts' && (
+          <div className="space-y-8">
+            <h2 className="text-4xl font-bold text-center text-white mb-12 text-shadow-banking-white">
+              Your Accounts
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {accounts.map((account) => (
+                <div key={account.id} className="p-8 rounded-3xl backdrop-blur-sm transform transition-all duration-500 bg-white/98 shadow-banking border border-banking-800/15 hover:shadow-banking-hover hover:scale-105 hover:-translate-y-2">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h3 className="text-2xl font-bold text-banking-700 mb-2">{account.name}</h3>
+                      <p className="text-gray-600 font-mono">{account.number}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-3xl font-bold text-banking-600">
+                        ${Math.abs(account.balance).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </p>
+                      <p className={`text-sm ${account.balance >= 0 ? 'text-success-600' : 'text-error-600'}`}>
+                        {account.balance >= 0 ? 'Available Balance' : 'Outstanding Balance'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex space-x-4">
+                    <button className="flex-1 px-8 py-4 rounded-2xl font-semibold text-white transition-all duration-300 transform bg-banking-btn shadow-banking-btn border border-banking-500/30 relative overflow-hidden hover:bg-banking-btn-hover hover:shadow-banking-btn-hover hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      View Details
+                    </button>
+                    <button className="flex-1 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform bg-banking-500/10 text-banking-700 border-2 border-banking-500/30 shadow-soft hover:bg-banking-500/20 hover:border-banking-500/50 hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      Transfer
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Services Tab */}
+        {activeTab === 'services' && (
+          <div className="space-y-8">
+            <h2 className="text-4xl font-bold text-center text-white mb-12 text-shadow-banking-white">
+              Banking Services
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {bankingServices.map((service, index) => (
+                <div key={index} className="relative p-8 rounded-3xl backdrop-blur-sm overflow-hidden transform transition-all duration-500 bg-white/98 shadow-banking border border-banking-800/15 hover:shadow-banking-hover hover:scale-105 hover:-translate-y-2">
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-500 bg-gradient-to-br from-banking-500/8 to-banking-700/8 hover:opacity-100"></div>
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 rounded-3xl mx-auto mb-6 flex items-center justify-center text-3xl bg-banking-btn text-white shadow-banking-btn transition-all duration-300 hover:-translate-y-2 hover:scale-110 hover:shadow-banking-btn-hover">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 text-center">{service.description}</p>
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform bg-banking-500/10 text-banking-700 border-2 border-banking-500/30 shadow-soft hover:bg-banking-500/20 hover:border-banking-500/50 hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Support Tab */}
+        {activeTab === 'support' && (
+          <div className="space-y-8">
+            <h2 className="text-4xl font-bold text-center text-white mb-12 text-shadow-banking-white">
+              Customer Support
+            </h2>
+            <div className="p-10 rounded-3xl backdrop-blur-sm bg-white/98 shadow-banking border border-banking-800/15">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-banking-500/8 to-banking-700/8 border border-banking-500/15 shadow-inner-soft">
+                  <h3 className="text-2xl font-semibold mb-6 text-banking-700">
+                    Contact Us
+                  </h3>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-banking-800 mb-3">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter your full name"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white placeholder-gray-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-banking-800 mb-3">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="your.email@example.com"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white placeholder-gray-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-banking-800 mb-3">
+                        Message
+                      </label>
+                      <textarea
+                        rows={4}
+                        placeholder="How can we help you today?"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-800 text-base transition-all duration-300 shadow-soft focus:outline-none focus:border-banking-500 focus:shadow-banking-btn focus:bg-white placeholder-gray-400 resize-none"
+                      />
+                    </div>
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold text-white transition-all duration-300 transform bg-banking-btn shadow-banking-btn border border-banking-500/30 relative overflow-hidden hover:bg-banking-btn-hover hover:shadow-banking-btn-hover hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      <span className="relative z-10">Send Message</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-500"></div>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-banking-500/8 to-banking-700/8 border border-banking-500/15 shadow-inner-soft">
+                  <h3 className="text-2xl font-semibold mb-6 text-banking-700">
+                    Quick Help
+                  </h3>
+                  <div className="space-y-4">
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold text-white transition-all duration-300 transform bg-banking-accent shadow-banking-btn border border-success-600/30 hover:bg-gradient-to-br hover:from-success-600 hover:to-success-700 hover:shadow-banking-btn-hover hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      📞 Call Customer Service
+                    </button>
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform bg-banking-500/10 text-banking-700 border-2 border-banking-500/30 shadow-soft hover:bg-banking-500/20 hover:border-banking-500/50 hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      💬 Live Chat Support
+                    </button>
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform bg-banking-500/10 text-banking-700 border-2 border-banking-500/30 shadow-soft hover:bg-banking-500/20 hover:border-banking-500/50 hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      📧 Email Support
+                    </button>
+                    <button className="w-full px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform bg-banking-500/10 text-banking-700 border-2 border-banking-500/30 shadow-soft hover:bg-banking-500/20 hover:border-banking-500/50 hover:scale-105 hover:-translate-y-1 active:scale-95">
+                      📍 Find Branch Locations
+                    </button>
+                    <div className="mt-8 p-6 bg-banking-50 rounded-3xl border border-banking-200">
+                      <h4 className="font-bold text-banking-700 mb-2">24/7 Support</h4>
+                      <p className="text-gray-600 text-sm">
+                        Our customer service team is available around the clock to assist you with any banking needs.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        )}
 
-        {/* Space Features */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center cosmic-gradient">
-            ✨ Cosmic Features
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {spaceFeatures.map((feature, index) => (
-              <div key={index} className="feature-card group">
-                <div className="feature-icon-container">
-                  <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
-                  </div>
-                  <div className="feature-glow"></div>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-blue-200 text-sm leading-relaxed">{feature.desc}</p>
-                <div className="feature-pulse"></div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Cosmic Animations Demo */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center cosmic-gradient">
-            🌟 Cosmic Animations
-          </h2>
-          <div className="cosmic-animations-grid">
-            <div className="animation-demo animate-orbit">
-              <div className="cosmic-orb bg-gradient-to-r from-blue-400 to-purple-500">
-                <div className="orb-glow"></div>
-              </div>
-              <p className="text-cyan-300 text-sm mt-4">Orbital Motion</p>
-            </div>
-            
-            <div className="animation-demo animate-pulse-cosmic">
-              <div className="cosmic-orb bg-gradient-to-r from-pink-400 to-red-500">
-                <div className="orb-glow"></div>
-              </div>
-              <p className="text-cyan-300 text-sm mt-4">Stellar Pulse</p>
-            </div>
-            
-            <div className="animation-demo animate-float">
-              <div className="cosmic-orb bg-gradient-to-r from-green-400 to-teal-500">
-                <div className="orb-glow"></div>
-              </div>
-              <p className="text-cyan-300 text-sm mt-4">Zero Gravity</p>
-            </div>
-            
-            <div className="animation-demo animate-spin-slow">
-              <div className="cosmic-orb bg-gradient-to-r from-yellow-400 to-orange-500">
-                <div className="orb-glow"></div>
-              </div>
-              <p className="text-cyan-300 text-sm mt-4">Planetary Spin</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Space Statistics */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center cosmic-gradient">
-            📊 Universe Statistics
-          </h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number cosmic-gradient">13.8B</div>
-              <div className="stat-label">Years Old</div>
-              <div className="stat-sublabel">Age of Universe</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number cosmic-gradient">2T</div>
-              <div className="stat-label">Galaxies</div>
-              <div className="stat-sublabel">Observable Universe</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number cosmic-gradient">5,000+</div>
-              <div className="stat-label">Exoplanets</div>
-              <div className="stat-sublabel">Confirmed Discoveries</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number cosmic-gradient">∞</div>
-              <div className="stat-label">Possibilities</div>
-              <div className="stat-sublabel">To Explore</div>
-            </div>
-          </div>
-        </section>
-
-        {/* Cosmic Footer */}
-        <footer className="text-center py-12 border-t border-purple-500/30">
+        {/* Footer */}
+        <footer className="text-center py-12 border-t border-white/20 mt-16">
           <div className="mb-6">
-            <div className="text-2xl mb-4">🌌✨🚀✨🌌</div>
-            <p className="text-purple-300 text-lg mb-2">
-              "The cosmos is within us. We are made of star-stuff."
+            <div className="text-2xl mb-4">💜🏦💜</div>
+            <p className="text-white/90 text-lg mb-2 text-shadow-banking-soft">
+              "Your financial success is our mission"
             </p>
-            <p className="text-blue-400 text-sm">- Carl Sagan</p>
+            <p className="text-white/70 text-sm text-shadow-banking-soft">- PurpleBank Team</p>
           </div>
-          <p className="text-cyan-400">
-            Built with React, Vite, and Cosmic Energy ⭐
+          <p className="text-white/80 text-shadow-banking-soft">
+            Built with React, Vite, and Banking Excellence 💜
           </p>
         </footer>
       </div>

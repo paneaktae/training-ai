@@ -8,6 +8,20 @@ export default {
     extend: {
       // Color palette
       colors: {
+        // Banking purple theme
+        banking: {
+          50: '#faf5ff',
+          100: '#f3e8ff',
+          200: '#e9d5ff',
+          300: '#d8b4fe',
+          400: '#c084fc',
+          500: '#a855f7',
+          600: '#9333ea',
+          700: '#7c3aed',
+          800: '#6b46c1',
+          900: '#581c87',
+          950: '#3b0764',
+        },
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -101,6 +115,19 @@ export default {
         },
       },
       
+      // Banking-specific gradients
+      backgroundImage: {
+        'banking-gradient': 'linear-gradient(135deg, #6B46C1 0%, #9333EA 25%, #7C3AED 50%, #8B5CF6 100%)',
+        'banking-light': 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 25%, #E2E8F0 50%, #CBD5E1 100%)',
+        'banking-dark': 'linear-gradient(135deg, #1E293B 0%, #334155 25%, #475569 50%, #64748B 100%)',
+        'banking-card': 'linear-gradient(135deg, #8B5CF6 0%, #6B46C1 100%)',
+        'banking-btn': 'linear-gradient(135deg, #8B5CF6 0%, #6B46C1 100%)',
+        'banking-btn-hover': 'linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)',
+        'banking-accent': 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+        'banking-danger': 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+        'banking-text': 'linear-gradient(to right, #6B46C1, #8B5CF6, #6366F1)',
+      },
+      
       // Typography
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -138,12 +165,25 @@ export default {
         '5xl': '2.5rem',
       },
       
-      // Shadows
+      // Banking-specific shadows
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'hard': '0 10px 40px -10px rgba(0, 0, 0, 0.2)',
         'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+        'banking': '0 25px 50px rgba(107, 70, 193, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+        'banking-hover': '0 35px 70px rgba(107, 70, 193, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1)',
+        'banking-card': '0 20px 40px rgba(107, 70, 193, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        'banking-btn': '0 8px 25px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        'banking-btn-hover': '0 12px 35px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+      },
+      
+      // Banking-specific text shadows
+      textShadow: {
+        'banking-strong': '0 2px 4px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.3)',
+        'banking-soft': '0 1px 2px rgba(0, 0, 0, 0.3)',
+        'banking-white': '0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3)',
+        'banking-enhanced': '0 1px 3px rgba(0, 0, 0, 0.3)',
       },
       
       // Animation
@@ -152,6 +192,9 @@ export default {
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
         'bounce-soft': 'bounceSoft 0.6s ease-in-out',
+        'float-banking': 'floatBanking 8s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 3s ease-in-out infinite',
+        'shimmer': 'shimmer 0.5s ease-in-out',
       },
       
       keyframes: {
@@ -171,6 +214,18 @@ export default {
           '0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
           '40%': { transform: 'translateY(-5px)' },
           '60%': { transform: 'translateY(-3px)' },
+        },
+        floatBanking: {
+          '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+          '50%': { transform: 'translateY(-30px) scale(1.1)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        shimmer: {
+          '0%': { left: '-100%' },
+          '100%': { left: '100%' },
         },
       },
       
@@ -195,5 +250,27 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Add text shadow utility plugin
+    function({ addUtilities }) {
+      const textShadowUtilities = {
+        '.text-shadow-banking-strong': {
+          textShadow: '0 2px 4px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.3)',
+        },
+        '.text-shadow-banking-soft': {
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+        },
+        '.text-shadow-banking-white': {
+          textShadow: '0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3)',
+        },
+        '.text-shadow-banking-enhanced': {
+          textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
+        },
+        '.text-shadow-none': {
+          textShadow: 'none',
+        },
+      }
+      addUtilities(textShadowUtilities)
+    }
+  ],
 }
